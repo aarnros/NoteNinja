@@ -1,3 +1,5 @@
+
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -278,7 +280,7 @@ class GeneratorPage extends StatelessWidget {
                         width: 50,
                         height: 50,
                         decoration: BoxDecoration(color: Colors.amberAccent),
-                        child: Icon(Icons.calendar_month),
+                        child: Icon(Icons.note),
                       ),
                       Text('Previous Note')
                     ],
@@ -411,14 +413,61 @@ class _NewNotePageState extends State<NewNotePage> {
 class SavedNotesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          padding: EdgeInsets.only(top: 100),
+          child: Column(
+            children: [
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const NoteCard(),
+                  const NoteCard(),
+                  const NoteCard()
+                  
+                ],
+              )
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'New Note',
+          onPressed: () {},
+          child: Icon(Icons.add),
       ),
       appBar: AppBar(
         title: Text('Notes'),
         backgroundColor: const Color.fromARGB(255, 255, 195, 177),
+      ),
+      ),
+      
+    );
+  }
+}
+//Creates a clickable note card
+class NoteCard extends StatelessWidget {
+  const NoteCard({super.key});
+
+  @override
+  Widget build (BuildContext context){
+    return Center(
+      child: Card(
+        clipBehavior: Clip.hardEdge,
+        child: InkWell(
+          splashColor: Colors.blueAccent,
+          //Clicking Function
+          onTap: () {
+            debugPrint('Note Tapped');
+          },
+          child: const SizedBox(
+            width: 200,
+            height: 100,
+            child: Text('Your Note Here', textAlign: TextAlign.center,),
+          ),
+        ),
       ),
     );
   }
@@ -444,7 +493,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TableCalendar - Basics'),
+        title: Text('Your Calendar'),
       ),
       //"+" button on calendar page, will eventually be used to add events
       floatingActionButton: FloatingActionButton(
