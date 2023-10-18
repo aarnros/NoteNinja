@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(const SignUpApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -50,6 +48,114 @@ class MyAppState extends ChangeNotifier {
   }
 }
 
+//Start of Sign Up Page
+class SignUpApp extends StatelessWidget {
+  const SignUpApp();
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      routes: {
+        '/': (context) => const SignUpScreen(),
+        '/welcome': (context) => const MyApp(),
+      },
+    );
+  }
+}
+
+//Sign Up Background
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      body: const Center(
+        child: SizedBox(
+          width: 400,
+          child: Card(
+            child: SignUpForm(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//The Sign Up Box State
+class SignUpForm extends StatefulWidget {
+  const SignUpForm();
+
+  @override
+  State<SignUpForm> createState() => _SignUpFormState();
+}
+
+//Text Box
+class _SignUpFormState extends State<SignUpForm> {
+  final _firstNameTextController = TextEditingController();
+  final _lastNameTextController = TextEditingController();
+  final _usernameTextController = TextEditingController();
+
+  double _formProgress = 0;
+
+  void _showWelcomeScreen() {
+    Navigator.of(context).pushNamed('/welcome');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          LinearProgressIndicator(value: _formProgress),
+          Text('Sign up', style: Theme.of(context).textTheme.headlineMedium),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: TextFormField(
+              controller: _firstNameTextController,
+              decoration: const InputDecoration(hintText: 'First name'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: TextFormField(
+              controller: _lastNameTextController,
+              decoration: const InputDecoration(hintText: 'Last name'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: TextFormField(
+              controller: _usernameTextController,
+              decoration: const InputDecoration(hintText: 'Username'),
+            ),
+          ),
+          TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.resolveWith(
+                  (Set<MaterialState> states) {
+                return states.contains(MaterialState.disabled)
+                    ? null
+                    : Colors.white;
+              }),
+              backgroundColor: MaterialStateProperty.resolveWith(
+                  (Set<MaterialState> states) {
+                return states.contains(MaterialState.disabled)
+                    ? null
+                    : Colors.blue;
+              }),
+            ),
+            onPressed: _showWelcomeScreen,
+            child: const Text('Sign up'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Sends User to App after sign up
 class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -61,6 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Widget page;
+    //Do we need brakes for each case?
     switch (selectedIndex) {
       case 0:
         page = GeneratorPage();
@@ -90,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   NavigationRailDestination(
                     icon: Icon(Icons.favorite),
-                    label: Text('Favorites'),
+                    label: Text('Favorite Notes'),
                   ),
                   NavigationRailDestination(
                     icon: Icon(Icons.add),
@@ -139,32 +246,48 @@ class GeneratorPage extends StatelessWidget {
       icon = Icons.favorite_border;
     }
 
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BigCard(pair: pair),
-          SizedBox(height: 10),
-          Row(
-            mainAxisSize: MainAxisSize.min,
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          padding: EdgeInsets.only(top: 100),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  appState.toggleFavorite();
-                },
-                icon: Icon(icon),
-                label: Text('Like'),
+              //Upcoming Events Tab
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(color: Colors.amberAccent),
+                        child: Icon(Icons.calendar_month),
+                      ),
+                      Text('Upcoming Events')
+                    ],
+                  )
+                ],
               ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getNext();
-                },
-                child: Text('Next'),
+              //Previous Note Tab
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(color: Colors.amberAccent),
+                        child: Icon(Icons.calendar_month),
+                      ),
+                      Text('Previous Note')
+                    ],
+                  )
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -227,6 +350,7 @@ class FavoritesPage extends StatelessWidget {
   }
 }
 
+//Do we need A page to create notes, could just be a button on a note page
 class NewNotePage extends StatefulWidget {
   const NewNotePage({super.key});
   @override
@@ -287,11 +411,14 @@ class _NewNotePageState extends State<NewNotePage> {
 class SavedNotesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Text('Saved Notes'),
-        ],
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
+      appBar: AppBar(
+        title: Text('Notes'),
+        backgroundColor: const Color.fromARGB(255, 255, 195, 177),
       ),
     );
   }
@@ -304,16 +431,26 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
+  //Limits
   final kFirstDay = DateTime.utc(2021, 1, 1);
   final kLastDay = DateTime.utc(2030, 12, 31);
+
+  //Formating
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('TableCalendar - Basics'),
+      ),
+      //"+" button on calendar page, will eventually be used to add events
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Add Event',
+        child: Icon(Icons.add),
       ),
       body: TableCalendar(
         firstDay: kFirstDay,
