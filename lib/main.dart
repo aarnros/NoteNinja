@@ -1,5 +1,3 @@
-
-
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -419,7 +417,6 @@ class SavedNotesPage extends StatelessWidget {
           padding: EdgeInsets.only(top: 100),
           child: Column(
             children: [
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -427,7 +424,6 @@ class SavedNotesPage extends StatelessWidget {
                   const NoteCard(),
                   const NoteCard(),
                   const NoteCard()
-                  
                 ],
               )
             ],
@@ -437,22 +433,22 @@ class SavedNotesPage extends StatelessWidget {
           tooltip: 'New Note',
           onPressed: () {},
           child: Icon(Icons.add),
+        ),
+        appBar: AppBar(
+          title: Text('Notes'),
+          backgroundColor: const Color.fromARGB(255, 255, 195, 177),
+        ),
       ),
-      appBar: AppBar(
-        title: Text('Notes'),
-        backgroundColor: const Color.fromARGB(255, 255, 195, 177),
-      ),
-      ),
-      
     );
   }
 }
+
 //Creates a clickable note card
 class NoteCard extends StatelessWidget {
   const NoteCard({super.key});
 
   @override
-  Widget build (BuildContext context){
+  Widget build(BuildContext context) {
     return Center(
       child: Card(
         clipBehavior: Clip.hardEdge,
@@ -465,7 +461,10 @@ class NoteCard extends StatelessWidget {
           child: const SizedBox(
             width: 200,
             height: 100,
-            child: Text('Your Note Here', textAlign: TextAlign.center,),
+            child: Text(
+              'Your Note Here',
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       ),
@@ -489,6 +488,8 @@ class _CalendarPageState extends State<CalendarPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
+  //Add Event Function
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -497,7 +498,7 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
       //"+" button on calendar page, will eventually be used to add events
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => _addEventDialog(context),
         tooltip: 'Add Event',
         child: Icon(Icons.add),
       ),
@@ -536,6 +537,94 @@ class _CalendarPageState extends State<CalendarPage> {
           _focusedDay = focusedDay;
         },
       ),
+    );
+  }
+
+  Future<void> _addEventDialog(BuildContext context) {
+    DateTime selectedDate = DateTime.now();
+
+    Future<void> selectDate(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: selectedDate,
+          firstDate: DateTime(2021),
+          lastDate: DateTime(2030));
+      if (picked != null && picked != selectedDate) {
+        setState(() {
+          selectedDate = picked;
+        });
+      }
+    }
+
+    Future<void> selectTime(BuildContext context) async {
+      final TimeOfDay? picked = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+    }
+
+    return showAdaptiveDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add Event'),
+          content: Column(
+            children: [
+              TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Event Name',
+                ),
+              ),
+              TextField(
+                // expands: true,
+                // maxLines: null,
+                // minLines: null,
+                decoration: const InputDecoration(
+                  hintText: 'Event Description',
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: Center(
+                          child:
+                              Text("${selectedDate.toLocal()}".split(' ')[0]))),
+                  IconButton(
+                    onPressed: () => selectDate(context),
+                    icon: Icon(Icons.calendar_today),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: Center(
+                          child:
+                              Text("${selectedDate.toLocal()}".split(' ')[1]))),
+                  IconButton(
+                    onPressed: () => selectTime(context),
+                    icon: Icon(Icons.access_time),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Add'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
