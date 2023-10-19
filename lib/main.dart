@@ -542,6 +542,14 @@ class _CalendarPageState extends State<CalendarPage> {
 
   Future<void> _addEventDialog(BuildContext context) {
     DateTime selectedDate = DateTime.now();
+    TimeOfDay selectedTime = TimeOfDay.now();
+    TextEditingController startDateController = TextEditingController();
+    // TextEditingController endDateController = TextEditingController();
+    TextEditingController startTimeController = TextEditingController();
+    // TextEditingController endTimeController = TextEditingController();
+    startDateController.text = "${selectedDate.toLocal()}".split(' ')[0];
+    // endDateController.text = "${selectedDate.toLocal()}".split(' ')[0];
+    startTimeController.text = "${selectedTime.hour}:${selectedTime.minute}";
 
     Future<void> selectDate(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
@@ -552,6 +560,7 @@ class _CalendarPageState extends State<CalendarPage> {
       if (picked != null && picked != selectedDate) {
         setState(() {
           selectedDate = picked;
+          startDateController.text = "${selectedDate.toLocal()}".split(' ')[0];
         });
       }
     }
@@ -561,6 +570,13 @@ class _CalendarPageState extends State<CalendarPage> {
         context: context,
         initialTime: TimeOfDay.now(),
       );
+      if (picked != null && picked != selectedTime) {
+        setState(() {
+          selectedTime = picked;
+          startTimeController.text =
+              "${selectedTime.hour}:${selectedTime.minute}";
+        });
+      }
     }
 
     return showAdaptiveDialog<void>(
@@ -587,8 +603,13 @@ class _CalendarPageState extends State<CalendarPage> {
                 children: [
                   Expanded(
                       child: Center(
-                          child:
-                              Text("${selectedDate.toLocal()}".split(' ')[0]))),
+                          child: TextField(
+                    controller: startDateController,
+                    readOnly: true,
+                    decoration: const InputDecoration(
+                      hintText: 'Event Date',
+                    ),
+                  ))),
                   IconButton(
                     onPressed: () => selectDate(context),
                     icon: Icon(Icons.calendar_today),
@@ -599,8 +620,14 @@ class _CalendarPageState extends State<CalendarPage> {
                 children: [
                   Expanded(
                       child: Center(
-                          child:
-                              Text("${selectedDate.toLocal()}".split(' ')[1]))),
+                    child: TextField(
+                      controller: startTimeController,
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        hintText: 'Event Time',
+                      ),
+                    ),
+                  )),
                   IconButton(
                     onPressed: () => selectTime(context),
                     icon: Icon(Icons.access_time),
