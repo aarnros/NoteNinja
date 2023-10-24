@@ -1,0 +1,1 @@
+dart run rename setAppName -t ios, android, macos, linux, web, windows -v "Note Ninja"
