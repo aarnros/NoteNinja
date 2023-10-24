@@ -582,74 +582,75 @@ class _CalendarPageState extends State<CalendarPage> {
     return showAdaptiveDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Add Event'),
-          content: Column(
-            children: [
-              TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Event Name',
-                ),
-              ),
-              TextField(
-                // expands: true,
-                // maxLines: null,
-                // minLines: null,
-                decoration: const InputDecoration(
-                  hintText: 'Event Description',
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                      child: Center(
-                          child: TextField(
-                    controller: startDateController,
-                    readOnly: true,
-                    decoration: const InputDecoration(
-                      hintText: 'Event Date',
-                    ),
-                  ))),
-                  IconButton(
-                    onPressed: () => selectDate(context),
-                    icon: Icon(Icons.calendar_today),
+        return Dialog(
+          shape: (RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          )),
+          // title: const Text('Add Event'),
+          child: Container(
+            height: 300,
+            width: 300,
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'Event Name',
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                      child: Center(
-                    child: TextField(
-                      controller: startTimeController,
+                ),
+                TextField(
+                  // expands: true,
+                  // maxLines: null,
+                  // minLines: null,
+                  decoration: const InputDecoration(
+                    hintText: 'Event Description',
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: Center(
+                            child: TextField(
+                      controller: startDateController,
                       readOnly: true,
                       decoration: const InputDecoration(
-                        hintText: 'Event Time',
+                        hintText: 'Event Date',
                       ),
+                    ))),
+                    IconButton(
+                      onPressed: () => selectDate(context),
+                      icon: Icon(Icons.calendar_today),
                     ),
-                  )),
-                  IconButton(
-                    onPressed: () => selectTime(context),
-                    icon: Icon(Icons.access_time),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: Center(
+                      child: TextField(
+                        controller: startTimeController,
+                        readOnly: true,
+                        decoration: const InputDecoration(
+                          hintText: 'Event Time',
+                        ),
+                      ),
+                    )),
+                    IconButton(
+                      onPressed: () => selectTime(context),
+                      icon: Icon(Icons.access_time),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Add'),
+                ),
+              ],
+            ),
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Add'),
-            ),
-          ],
         );
       },
     );
