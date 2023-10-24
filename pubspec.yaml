@@ -1,4 +1,4 @@
-name: codelab
+name: note_ninja
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -43,6 +43,11 @@ dependencies:
 dev_dependencies:
     flutter_test:
         sdk: flutter
+    rename: ^3.0.1
+    #     flutter_launcher_name: "^0.0.1"
+
+    # flutter_launcher_name:
+    #     name: "Note Ninja"
 
     # The "flutter_lints" package below contains a set of recommended lints to
     # encourage good coding practices. The lint set provided by the package is
