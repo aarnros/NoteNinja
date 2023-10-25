@@ -16,12 +16,25 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - uses: subosito/flutter-action@v2
-            - run: flutter build web --release --base-href /NoteNinja/
-            - run: git config user.name github-actions
-            - run: git config user.email github-actions@github.com
-            - run: git --work-tree build/web add --all
-            - run: git commit -m "Automatic deployment by github-actions"
-            - name: Push changes
-              run: |
-                  git remote add orign https://${{ secrets.GH_TOKEN }}@github.com/aarnros/NoteNinja.git
-                  git push origin HEAD:gh-pages --force
+              with:
+                  channel: "stable"
+
+            - run: flutter clean
+            - run: flutter pub get
+            - run: flutter build web --release
+
+            - run: |
+                  cd build
+                  mkdir web-deploy
+                  cd web-deploy
+                  git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --global user.name "github-actions[bot]"
+                  git init
+                  git remote add origin https://${{secrets.GH_TOKEN}}@github.com/aarnros/NoteNinja.git
+                  git fetch origin gh-pages
+                  git switch gh-pages
+                  cp -R ../web/* .
+                  git status
+                  git add .
+                  git commit -m "Deploying to gh-pages"
+                  git push origin gh-pages
