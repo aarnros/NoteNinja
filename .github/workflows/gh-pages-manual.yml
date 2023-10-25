@@ -10,6 +10,8 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+        env:
+            my_secret: ${{ secrets.GH_TOKEN }}
 
         steps:
             - uses: actions/checkout@v3
@@ -21,5 +23,5 @@ jobs:
             - run: git commit -m "Automatic deployment by github-actions"
             - name: Push changes
               run: |
-                  git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}
+                  git remote add orign https://${{ secrets.GH_TOKEN }}@github.com/aarnros/NoteNinja.git
                   git push origin HEAD:gh-pages --force
