@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "237804505250",
+    "project_id": "noteninja-fa41c",
+    "storage_bucket": "noteninja-fa41c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237804505250:android:ff7f571fc2fb15e9922ffb",
+        "android_client_info": {
+          "package_name": "com.example.codelab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237804505250-bvk2aa5520dmsi0bovjrum4kuaviq1ae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTBV-pqaKJ4uVg_dpk9SWIuoTMi46Tjcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237804505250-aqne45v0alft5urmjb2c11p7prh9ni2a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "237804505250-0bh3e546db64jdkvkv38gquqajq0t42m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.codelab.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
