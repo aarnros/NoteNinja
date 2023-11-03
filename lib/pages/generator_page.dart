@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class GeneratorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    var appState = context.watch<GlobalAppState>();
     var pair = appState.current;
 
     IconData icon;
