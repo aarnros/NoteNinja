@@ -110,6 +110,18 @@ class _CalendarPageState extends State<CalendarPage> {
                       child: ListTile(
                         onTap: () => print('${value[index]}'),
                         title: Text('${value[index]}'),
+                        subtitle: Text(value[index].description),
+                        leading: Text(
+                          value[index].formattedDuration,
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            setState(() {
+                              kEvents[_selectedDay!]!.removeAt(index);
+                            });
+                          },
+                        ),
                       ),
                     );
                   },
