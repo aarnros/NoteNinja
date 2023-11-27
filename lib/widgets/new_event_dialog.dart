@@ -1,10 +1,15 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:note_ninja/utils.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import 'package:intl/intl.dart';
 
-Future<void> addEventDialog(BuildContext context, StateSetter setState) {
+Future<void> addEventDialog(BuildContext context, StateSetter setState,
+    LinkedHashMap<DateTime, List<Event>> kEvents) {
+  String eventTitle = "";
+  String eventDescription = "";
   DateTime selectedDate = DateTime.now();
   TimeOfDay startTime = TimeOfDay.now();
   TimeOfDay endTime =
@@ -94,6 +99,9 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
                 decoration: const InputDecoration(
                   hintText: 'Event Name',
                 ),
+                onChanged: (value) {
+                  eventTitle = value;
+                },
               ),
               TextField(
                 // expands: true,
@@ -102,6 +110,9 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
                 decoration: const InputDecoration(
                   hintText: 'Event Description',
                 ),
+                onChanged: (value) {
+                  eventDescription = value;
+                },
               ),
               Row(
                 children: [
@@ -159,6 +170,29 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
               Spacer(),
               ElevatedButton(
                 onPressed: () {
+                  DateTime start = DateTime(
+                      selectedDate.year,
+                      selectedDate.month,
+                      selectedDate.day,
+                      startTime.hour,
+                      startTime.minute);
+                  DateTime end = DateTime(selectedDate.year, selectedDate.month,
+                      selectedDate.day, endTime.hour, endTime.minute);
+                  Event newEvent = Event(eventTitle, eventDescription, start,
+                      end.difference(start));
+                  setState(
+                    () {
+                      if (kEvents.containsKey(selectedDate)) {
+                        kEvents[selectedDate]?.add(newEvent);
+                      } else {
+                        final newEventList = List<Event>.empty(growable: true);
+                        newEventList.add(newEvent);
+                        kEvents.addAll(<DateTime, List<Event>>{
+                          selectedDate: newEventList
+                        });
+                      }
+                    },
+                  );
                   // createEvent(selectedDate, title, description, )
                   Navigator.pop(context);
                 },

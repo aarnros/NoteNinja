@@ -56,7 +56,7 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
       //"+" button on calendar page, will eventually be used to add events
       floatingActionButton: FloatingActionButton(
-        onPressed: () => addEventDialog(context, setState),
+        onPressed: () => addEventDialog(context, setState, kEvents),
         tooltip: 'Add Event',
         child: Icon(Icons.add),
       ),
