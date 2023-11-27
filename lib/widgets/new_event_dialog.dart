@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:note_ninja/utils.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
+import 'package:intl/intl.dart';
 
 Future<void> addEventDialog(BuildContext context, StateSetter setState) {
   DateTime selectedDate = DateTime.now();
@@ -7,14 +10,28 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
   TimeOfDay endTime =
       TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 1)));
 
+  bool use24HourClock = Provider.of<GlobalAppState>(context, listen: false)
+          .userSettings['use24HourClock'] ??
+      false;
+
+  String formatTime(TimeOfDay time) {
+    if (use24HourClock) {
+      return '${time.hour}:${time.minute}';
+    } else {
+      DateTime dt = DateTime(0, 0, 0, time.hour, time.minute);
+      DateFormat("h:mma").format(dt);
+      return '${dt.hour}:${dt.minute}';
+    }
+  }
+
   TextEditingController startDateController = TextEditingController();
   // TextEditingController endDateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
   startDateController.text = "${selectedDate.toLocal()}".split(' ')[0];
   // endDateController.text = "${selectedDate.toLocal()}".split(' ')[0];
-  startTimeController.text = "${startTime.hour}:${startTime.minute}";
-  endTimeController.text = "${endTime.hour}:${endTime.minute}";
+  startTimeController.text = formatTime(startTime);
+  endTimeController.text = formatTime(endTime);
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -38,7 +55,7 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
     if (picked != null && picked != startTime) {
       setState(() {
         startTime = picked;
-        startTimeController.text = "${startTime.hour}:${startTime.minute}";
+        startTimeController.text = formatTime(startTime);
       });
     }
   }
@@ -54,7 +71,7 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
         timeToDouble(endTime) > timeToDouble(startTime)) {
       setState(() {
         endTime = picked;
-        endTimeController.text = "${endTime.hour}:${endTime.minute}";
+        endTimeController.text = formatTime(endTime);
       });
     }
   }

@@ -8,13 +8,16 @@ class Event {
   final String description;
   final Duration duration;
   final DateTime start;
-  const Event(this.title, this.description, this.start, this.duration);
+  final DateTime end;
+  Event(this.title, this.description, this.start, this.duration)
+      : end = start.add(duration);
+
+  Event.fromEnd(this.title, this.description, this.start, this.end)
+      : duration = end.difference(start);
   // Event(this.title, this.description, this.start, this.end);
 
   @override
   String toString() => title;
-
-  DateTime get end => start.add(duration);
 
   bool isWithin(DateTime start, DateTime end) {
     return this.start.isAfter(start) && this.end.isBefore(end);
