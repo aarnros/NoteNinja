@@ -34,7 +34,7 @@ class GlobalAppState extends ChangeNotifier {
   UserCredential? userCredential;
 
   GlobalAppState([this.userCredential]);
-
+  
 
   var current = WordPair.random();
 

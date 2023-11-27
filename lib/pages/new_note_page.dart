@@ -36,27 +36,36 @@ class _NewNotePage extends State<NewNotePage> {
   void dispose() {
     _bodyTextController.dispose();
     _titleTextController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           tooltip: 'Back',
           onPressed: () => {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SavedNotesPage(),
-                ))
+            Navigator.popUntil(context, (route) => route.isFirst)
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => SavedNotesPage(),
+            //   ),
+            // ),
           },
         ),
         title: NoteTitleEntry(_titleTextController),
       ),
       body: NoteEntry(_bodyTextController),
-    );
+      floatingActionButton: FloatingActionButton(
+          tooltip: 'Save Note',
+          onPressed: () {
+            Navigator.popUntil(context, (route) => route.isFirst);
+          }),
+    ));
   }
 }
 

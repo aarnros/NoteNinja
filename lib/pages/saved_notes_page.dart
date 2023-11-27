@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/note_card.dart';
 import '../pages/new_note_page.dart';
 
@@ -10,8 +11,7 @@ class SavedNotesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         body: Container(
           padding: EdgeInsets.all(16),
           child: GridView.builder(
@@ -38,7 +38,6 @@ class SavedNotesPage extends StatelessWidget {
           child: Icon(Icons.add),
         ),
         appBar: AppBar(title: Text('Notes')),
-      ),
-    );
+      );
   }
 }
