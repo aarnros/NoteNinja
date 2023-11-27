@@ -1,6 +1,6 @@
 {
-    "name": "codelab",
-    "short_name": "codelab",
+    "name": "Note Ninja",
+    "short_name": "noteninja",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

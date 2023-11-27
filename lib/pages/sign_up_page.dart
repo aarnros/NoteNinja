@@ -1,5 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
+
+Future<UserCredential> signInWithGoogle() async {
+  // Create a new provider
+  GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+  // googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  // googleProvider.setCustomParameters({
+  //   'login_hint': 'user@example.com'
+  // });
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance.signInWithPopup(googleProvider);
+
+  // Or use signInWithRedirect
+  // return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
+}
 
 class SignUpApp extends StatelessWidget {
   const SignUpApp();
@@ -8,7 +25,7 @@ class SignUpApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         '/': (context) => const SignUpScreen(),
-        '/welcome': (context) => const MyApp(),
+        '/welcome': (context) => const GlobalApp(),
       },
     );
   }
@@ -101,6 +118,13 @@ class _SignUpFormState extends State<SignUpForm> {
             onPressed: _showWelcomeScreen,
             child: const Text('Sign up'),
           ),
+          TextButton(
+            onPressed: () async {
+              UserCredential userCredential = await signInWithGoogle();
+              print(userCredential.user?.displayName);
+            },
+            child: Text('Sign In with Google'),
+          )
         ],
       ),
     );

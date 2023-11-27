@@ -7,20 +7,20 @@ import 'package:provider/provider.dart';
 import 'pages/sign_up_page.dart';
 import 'pages/home_page.dart';
 
-Future<void> main() async{
+Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const SignUpApp());
-} 
+}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class GlobalApp extends StatelessWidget {
+  const GlobalApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
+      create: (context) => GlobalAppState(),
       child: MaterialApp(
-        title: 'Namer App',
+        title: 'Note Ninja',
         theme: defaultTheme,
         home: MyHomePage(),
       ),
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppState extends ChangeNotifier {
+class GlobalAppState extends ChangeNotifier {
   var current = WordPair.random();
 
   void getNext() {
