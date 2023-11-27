@@ -108,7 +108,7 @@ class _CalendarPageState extends State<CalendarPage> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
+                        onTap: () => print(value[index].toICSEvent()),
                         title: Text('${value[index]}'),
                         subtitle: Text(value[index].description),
                         leading: Text(
