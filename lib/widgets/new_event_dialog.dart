@@ -104,6 +104,7 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
               Spacer(),
               ElevatedButton(
                 onPressed: () {
+                  
                   Navigator.pop(context);
                 },
                 child: const Text('Add'),

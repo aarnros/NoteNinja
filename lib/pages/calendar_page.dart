@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../widgets/new_event_dialog.dart';
+import '../utils.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -18,7 +19,34 @@ class _CalendarPageState extends State<CalendarPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
-  //Add Event Function
+  //events
+  late final ValueNotifier<List<Event>> _selectedEvents;
+  @override
+  void initState() {
+    super.initState();
+    _selectedDay = _focusedDay;
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+  }
+
+  @override
+  void dispose() {
+    _selectedEvents.dispose();
+    super.dispose();
+  }
+
+  List<Event> _getEventsForDay(DateTime day) {
+    return kEvents[day] ?? [];
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+        _selectedEvents.value = _getEventsForDay(selectedDay);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,43 +60,77 @@ class _CalendarPageState extends State<CalendarPage> {
         tooltip: 'Add Event',
         child: Icon(Icons.add),
       ),
-      body: TableCalendar(
-        firstDay: kFirstDay,
-        lastDay: kLastDay,
-        focusedDay: _focusedDay,
-        calendarFormat: _calendarFormat,
-        selectedDayPredicate: (day) {
-          // Use `selectedDayPredicate` to determine which day is currently selected.
-          // If this returns true, then `day` will be marked as selected.
+      body: Column(
+        children: [
+          TableCalendar(
+            eventLoader: _getEventsForDay,
+            firstDay: kFirstDay,
+            lastDay: kLastDay,
+            focusedDay: _focusedDay,
+            calendarFormat: _calendarFormat,
+            selectedDayPredicate: (day) {
+              // Use `selectedDayPredicate` to determine which day is currently selected.
+              // If this returns true, then `day` will be marked as selected.
 
-          // Using `isSameDay` is recommended to disregard
-          // the time-part of compared DateTime objects.
-          return isSameDay(_selectedDay, day);
-        },
-        onDaySelected: (selectedDay, focusedDay) {
-          if (!isSameDay(_selectedDay, selectedDay)) {
-            // Call `setState()` when updating the selected day
-            setState(() {
-              _selectedDay = selectedDay;
+              // Using `isSameDay` is recommended to disregard
+              // the time-part of compared DateTime objects.
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: _onDaySelected,
+            onFormatChanged: (format) {
+              if (_calendarFormat != format) {
+                // Call `setState()` when updating calendar format
+                setState(() {
+                  _calendarFormat = format;
+                });
+              }
+            },
+            onPageChanged: (focusedDay) {
+              // No need to call `setState()` here
               _focusedDay = focusedDay;
-            });
-          }
-        },
-        onFormatChanged: (format) {
-          if (_calendarFormat != format) {
-            // Call `setState()` when updating calendar format
-            setState(() {
-              _calendarFormat = format;
-            });
-          }
-        },
-        onPageChanged: (focusedDay) {
-          // No need to call `setState()` here
-          _focusedDay = focusedDay;
-        },
+            },
+          ),
+          const SizedBox(height: 8.0),
+          Expanded(
+            child: ValueListenableBuilder<List<Event>>(
+              valueListenable: _selectedEvents,
+              builder: (context, value, _) {
+                return ListView.builder(
+                  itemCount: value.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 4.0,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: ListTile(
+                        onTap: () => print('${value[index]}'),
+                        title: Text('${value[index]}'),
+                        subtitle: Text(value[index].description),
+                        leading: Text(
+                          value[index].formattedDuration,
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            setState(() {
+                              kEvents[_selectedDay!]!.removeAt(index);
+                            });
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
-
-  
 }
