@@ -12,7 +12,7 @@ class NoteCard extends StatelessWidget {
           splashColor: Colors.blueAccent,
           //Clicking Function
           onTap: () {
-            debugPrint('Note Tapped');
+            debugPrint('pressed');
           },
           child: const SizedBox(
             width: 200,
