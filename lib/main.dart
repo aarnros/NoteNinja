@@ -6,6 +6,7 @@ import 'package:note_ninja/theme_const/theme_const.dart';
 import 'package:provider/provider.dart';
 import 'pages/sign_up_page.dart';
 import 'pages/home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -13,22 +14,28 @@ Future<void> main() async {
 }
 
 class GlobalApp extends StatelessWidget {
-  const GlobalApp({super.key});
+  UserCredential? userCredential;
 
+  GlobalApp([this.userCredential]);
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => GlobalAppState(),
+      create: (context) => GlobalAppState(this.userCredential),
       child: MaterialApp(
         title: 'Note Ninja',
         theme: defaultTheme,
-        home: MyHomePage(),
+        home: MyHomePage(this.userCredential),
       ),
     );
   }
 }
 
 class GlobalAppState extends ChangeNotifier {
+  UserCredential? userCredential;
+
+  GlobalAppState([this.userCredential]);
+
+
   var current = WordPair.random();
 
   void getNext() {

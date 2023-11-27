@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '/pages/generator_page.dart';
 import '/pages/fav_page.dart';
@@ -6,13 +7,20 @@ import '/pages/saved_notes_page.dart';
 import '/pages/calendar_page.dart';
 
 class MyHomePage extends StatefulWidget {
+  UserCredential? userCredential;
+  MyHomePage([this.userCredential]);
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState(this.userCredential);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
-
+  UserCredential? userCredential;
+  _MyHomePageState(this.userCredential) {
+    print("From _MyHomePageState...");
+    print(userCredential?.user?.displayName);
+    // print(userCredential);// Dangerous, use ONLY for debugging and delete this to avoid exposing user credentials!
+  }
   @override
   Widget build(BuildContext context) {
     Widget page;
