@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Event {
@@ -7,13 +8,16 @@ class Event {
   final String description;
   final Duration duration;
   final DateTime start;
-  const Event(this.title, this.description, this.start, this.duration);
+  final DateTime end;
+  Event(this.title, this.description, this.start, this.duration)
+      : end = start.add(duration);
+
+  Event.fromEnd(this.title, this.description, this.start, this.end)
+      : duration = end.difference(start);
   // Event(this.title, this.description, this.start, this.end);
 
   @override
   String toString() => title;
-
-  DateTime get end => start.add(duration);
 
   bool isWithin(DateTime start, DateTime end) {
     return this.start.isAfter(start) && this.end.isBefore(end);
@@ -65,3 +69,12 @@ final _kEventSource = {
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }
+
+void createEvent(
+    DateTime date, String title, String description, Duration duration) {
+  kEvents.update(
+      date, (value) => value..add(Event(title, description, date, duration)),
+      ifAbsent: () => [Event(title, description, date, duration)]);
+}
+
+double timeToDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;

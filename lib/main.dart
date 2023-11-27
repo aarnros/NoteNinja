@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -34,7 +36,13 @@ class GlobalAppState extends ChangeNotifier {
   UserCredential? userCredential;
 
   GlobalAppState([this.userCredential]);
-  
+
+  HashMap<String, dynamic> userSettings = HashMap<String, dynamic>();
+
+  void changeSetting(String setting, dynamic value) {
+    userSettings[setting] = value;
+    notifyListeners();
+  }
 
   var current = WordPair.random();
 
