@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:note_ninja/utils.dart';
 
 Future<void> addEventDialog(BuildContext context, StateSetter setState) {
   DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedTime = TimeOfDay.now();
+  TimeOfDay startTime = TimeOfDay.now();
+  TimeOfDay endTime =
+      TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 1)));
+
   TextEditingController startDateController = TextEditingController();
   // TextEditingController endDateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
-  // TextEditingController endTimeController = TextEditingController();
+  TextEditingController endTimeController = TextEditingController();
   startDateController.text = "${selectedDate.toLocal()}".split(' ')[0];
   // endDateController.text = "${selectedDate.toLocal()}".split(' ')[0];
-  startTimeController.text = "${selectedTime.hour}:${selectedTime.minute}";
+  startTimeController.text = "${startTime.hour}:${startTime.minute}";
+  endTimeController.text = "${endTime.hour}:${endTime.minute}";
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -25,16 +30,31 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
     }
   }
 
-  Future<void> selectTime(BuildContext context) async {
+  Future<void> selectStartTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
-    if (picked != null && picked != selectedTime) {
+    if (picked != null && picked != startTime) {
       setState(() {
-        selectedTime = picked;
-        startTimeController.text =
-            "${selectedTime.hour}:${selectedTime.minute}";
+        startTime = picked;
+        startTimeController.text = "${startTime.hour}:${startTime.minute}";
+      });
+    }
+  }
+
+  Future<void> selectEndTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime:
+          TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 1))),
+    );
+    if (picked != null &&
+        picked != endTime &&
+        timeToDouble(endTime) > timeToDouble(startTime)) {
+      setState(() {
+        endTime = picked;
+        endTimeController.text = "${endTime.hour}:${endTime.minute}";
       });
     }
   }
@@ -96,7 +116,25 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
                     ),
                   )),
                   IconButton(
-                    onPressed: () => selectTime(context),
+                    onPressed: () => selectStartTime(context),
+                    icon: Icon(Icons.access_time),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: Center(
+                    child: TextField(
+                      controller: endTimeController,
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        hintText: 'Event End Time',
+                      ),
+                    ),
+                  )),
+                  IconButton(
+                    onPressed: () => selectEndTime(context),
                     icon: Icon(Icons.access_time),
                   ),
                 ],
@@ -104,7 +142,7 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
               Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  
+                  // createEvent(selectedDate, title, description, )
                   Navigator.pop(context);
                 },
                 child: const Text('Add'),
