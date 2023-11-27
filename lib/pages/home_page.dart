@@ -5,6 +5,7 @@ import '/pages/fav_page.dart';
 import '/pages/new_note_page.dart';
 import '/pages/saved_notes_page.dart';
 import '/pages/calendar_page.dart';
+import '/pages/settings_page.dart';
 
 class MyHomePage extends StatefulWidget {
   UserCredential? userCredential;
@@ -36,6 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
         page = SavedNotesPage();
       case 4:
         page = CalendarPage();
+      case 5:
+        page = SettingsPage();
+
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -67,6 +71,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   NavigationRailDestination(
                     icon: Icon(Icons.calendar_month),
                     label: Text('View Calendar'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.settings),
+                    label: Text('Settings'),
                   ),
                 ],
                 selectedIndex: selectedIndex,
