@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_ninja/pages/saved_notes_page.dart';
 import '../widgets/note.dart';
+import 'package:note_ninja/pages/home_page.dart';
 
 class NewNotePage extends StatefulWidget {
   _NewNotePage createState() => _NewNotePage();
@@ -49,7 +50,7 @@ class _NewNotePage extends State<NewNotePage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SavedNotesPage(),
+                  builder: (context) => MyHomePage(),
                 ))
           },
         ),

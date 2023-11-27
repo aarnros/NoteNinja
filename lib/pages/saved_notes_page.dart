@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_ninja/theme_const/theme_const.dart';
 import '../widgets/note_card.dart';
 import '../pages/new_note_page.dart';
 
