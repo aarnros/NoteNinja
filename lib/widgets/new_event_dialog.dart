@@ -1,8 +1,14 @@
+import 'dart:collection';
+import '../utils.dart';
+
 import 'package:flutter/material.dart';
 
-Future<void> addEventDialog(BuildContext context, StateSetter setState) {
+Future<void> addEventDialog(BuildContext context, StateSetter setState,
+    LinkedHashMap<DateTime, List<Event>> kEvents) {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
+  String _name = "";
+  String _description = "";
   TextEditingController startDateController = TextEditingController();
   // TextEditingController endDateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
@@ -57,6 +63,7 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
                 decoration: const InputDecoration(
                   hintText: 'Event Name',
                 ),
+                onChanged: (text) => {_name = text},
               ),
               TextField(
                 // expands: true,
@@ -65,6 +72,7 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
                 decoration: const InputDecoration(
                   hintText: 'Event Description',
                 ),
+                onChanged: (value) => {_description = value},
               ),
               Row(
                 children: [
@@ -104,7 +112,26 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState) {
               Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  
+                  Event newEvent = Event(
+                      _name,
+                      _description,
+                      DateTime(selectedDate.year, selectedDate.month,
+                          selectedTime.hour, selectedTime.minute),
+                      Duration());
+                  print("new event");
+                  print(newEvent.toString());
+                  if (kEvents.containsKey(selectedDate)) {
+                    kEvents[selectedDate]?.add(newEvent);
+                    print("Contained the key, adding...");
+                  } else {
+                    final dateList = List<Event>.empty(growable: true);
+                    print("Did not contain date...");
+                    dateList.add(newEvent);
+                    kEvents.addAll(
+                        <DateTime, List<Event>>{selectedDate: dateList});
+                    print(kEvents[selectedDate]);
+                  }
+
                   Navigator.pop(context);
                 },
                 child: const Text('Add'),
