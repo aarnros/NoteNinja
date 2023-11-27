@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:icalendar_parser/icalendar_parser.dart';
 
 class Event {
   final String title;
@@ -35,6 +36,19 @@ class Event {
     String endHour = end.hour.toString();
     String endMinute = end.minute.toString();
     return '$startHour:$startMinute - $endHour:$endMinute';
+  }
+
+  String toICSEvent() {
+    String formattedStart = start.toUtc().toIso8601String();
+    String formattedEnd = end.toUtc().toIso8601String();
+    String icsString = 'BEGIN:VEVENT\n'
+        'SUMMARY:$title\n'
+        'DTSTART:$formattedStart\n'
+        'DTEND:$formattedEnd\n'
+        'DESCRIPTION:$description\n'
+        'END:VEVENT\n';
+    // print(icsString);
+    return icsString;
   }
 }
 
@@ -78,3 +92,11 @@ void createEvent(
 }
 
 double timeToDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
+
+void getICS() {
+  for (var event in kEvents.values) {
+    for (var item in event) {
+      print(item.toICSEvent());
+    }
+  }
+}
