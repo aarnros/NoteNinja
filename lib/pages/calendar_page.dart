@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../widgets/new_event_dialog.dart';
 import '../utils.dart';
-import '../EventList.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
