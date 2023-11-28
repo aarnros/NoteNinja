@@ -14,11 +14,13 @@ class NewNotePage extends StatelessWidget {
     _bodyController.dispose();
   }
 
+  //Updates the text in the note
   void updateOnBack() {
     note.updateBody(_bodyController.text);
     note.updateTitle(_titleController.text);
   }
 
+  //Gets the string from the note
   void updateTextFields() {
     _titleController = TextEditingController(text: note.title);
     _bodyController = TextEditingController(text: note.body);

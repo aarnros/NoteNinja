@@ -45,7 +45,8 @@ class _savedNotesPage extends State<SavedNotesPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         NewNotePage(note: createNewNote(), isNew: true)));
-            setState(() {});
+            setState(
+                () {}); //The cards will not update unless the state is updated
           }),
     );
   }
