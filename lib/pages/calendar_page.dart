@@ -134,33 +134,31 @@ class _CalendarPageState extends State<CalendarPage> {
                             IconButton(
                               icon: Icon(Icons.mode_edit),
                               onPressed: () {
-                                // setState(() {
-                                //   Event editableEvent =
-                                //       kEvents[_selectedDay!]!.removeAt(index);
-                                //   addEventDialog(
-                                //       context,
-                                //       setState,
-                                //       _selectedDay!,
-                                //       kEvents,
-                                //       _selectedEvents,
-                                //       editableEvent);
-                                // // });
+                                setState(() {
+                                  Event editableEvent =
+                                      kEvents[_selectedDay!]!.removeAt(index);
+                                  addEventDialog(
+                                      context,
+                                      setState,
+                                      _selectedDay!,
+                                      kEvents,
+                                      _selectedEvents,
+                                      editableEvent);
+                                });
                                 print(kEvents[_selectedDay!]![index]);
                               },
                             ),
                             IconButton(
-
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            setState(() {
-                              kEvents[_selectedDay!]!.removeAt(index);
-                              _selectedEvents.value =
-                                  kEvents[_selectedDay!]!.toList();
-                            });
-                          },
-
-                        ),
-],
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                setState(() {
+                                  kEvents[_selectedDay!]!.removeAt(index);
+                                  _selectedEvents.value =
+                                      kEvents[_selectedDay!]!.toList();
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     );
