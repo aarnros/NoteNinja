@@ -127,7 +127,25 @@ class _CalendarPageState extends State<CalendarPage> {
                           value[index]
                               .startToEndString(use24HourClock: use24HourClock),
                         ),
-                        trailing: IconButton(
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    Event editableEvent =
+                                        kEvents[_selectedDay!]!.removeAt(index);
+                                    addEventDialog(
+                                        context,
+                                        setState,
+                                        _selectedDay!,
+                                        kEvents,
+                                        _selectedEvents,
+                                        editableEvent);
+                                  });
+                                },
+                                icon: Icon(Icons.mode_edit)),
+                            IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () {
                             setState(() {
@@ -136,6 +154,8 @@ class _CalendarPageState extends State<CalendarPage> {
                                   kEvents[_selectedDay!]!.toList();
                             });
                           },
+                        ),
+],
                         ),
                       ),
                     );
