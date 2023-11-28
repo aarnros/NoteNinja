@@ -1,8 +1,14 @@
 import 'dart:collection';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:icalendar_parser/icalendar_parser.dart';
+import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Event {
   final String title;
@@ -10,6 +16,9 @@ class Event {
   final Duration duration;
   final DateTime start;
   final DateTime end;
+  final String userEmail = 'test@example.com';
+  final DateTime dateStamp = DateTime.now();
+
   Event(this.title, this.description, this.start, this.duration)
       : end = start.add(duration);
 
@@ -39,18 +48,18 @@ class Event {
   }
 
   String toICSEvent() {
-    String formattedStart = start.toUtc().toIso8601String();
-    String formattedEnd = end.toUtc().toIso8601String();
+    DateFormat icsFormat = DateFormat('yyyyMMdd\'T\'HHmmss\'Z\'');
     String icsString = 'BEGIN:VEVENT\n'
+'UID:$userEmail\n'
+        'DTSTAMP:${icsFormat.format(dateStamp.toUtc())}\n'
         'SUMMARY:$title\n'
-        'DTSTART:$formattedStart\n'
-        'DTEND:$formattedEnd\n'
+        'DTSTART:${icsFormat.format(start.toUtc())}\n'
+        'DTEND:${icsFormat.format(end.toUtc())}\n'
         'DESCRIPTION:$description\n'
         'END:VEVENT\n';
     // print(icsString);
     return icsString;
   }
-
 }
 
 final kToday = DateTime.now();
@@ -94,10 +103,32 @@ void createEvent(
 
 double timeToDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
 
-void getICS() {
+String getICSString() {
+String icsString = 'BEGIN:VCALENDAR\n'
+      'VERSION:2.0\n'
+      'PRODID:-//Flutter//Event Calendar//EN\n';
+
   for (var event in kEvents.values) {
     for (var item in event) {
-      print(item.toICSEvent());
+      icsString += item.toICSEvent();
+      break;
+      // print(item.toICSEvent());
     }
+  break;
   }
+  icsString += 'END:VCALENDAR';
+  return icsString;
+}
+
+void shareICS() {
+  String icsString = getICSString();
+  Uint8List bytes = Uint8List.fromList(utf8.encode(icsString));
+  if (kIsWeb){
+
+  }else{
+  XFile icsFile =
+      XFile.fromData(bytes, name: 'example.ics', mimeType: 'text/calendar');
+  Share.shareXFiles([icsFile], text: 'Here is your calendar file!');
+  }
+  // final bytes = File('example.ics').writeAsStringSync(icsString);
 }
