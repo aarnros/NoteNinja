@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:note_ninja/widgets/note.dart';
+import "../widgets/note_data.dart";
+import '../pages/saved_notes_page.dart';
+import '../pages/new_note_page.dart';
 
 class NoteCard extends StatelessWidget {
-  const NoteCard({super.key});
+  final Note note;
+  NoteCard({super.key, required this.note});
 
   @override
   Widget build(BuildContext context) {
@@ -12,13 +17,18 @@ class NoteCard extends StatelessWidget {
           splashColor: Colors.blueAccent,
           //Clicking Function
           onTap: () {
-            debugPrint('pressed');
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        NewNotePage(note: note, isNew: false)));
+            ;
           },
-          child: const SizedBox(
+          child: SizedBox(
             width: 200,
             height: 100,
             child: Text(
-              'Your Note Here',
+              note.title,
               textAlign: TextAlign.center,
             ),
           ),
