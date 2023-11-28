@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
-
+import 'main.dart';
+import 'package:provider/provider.dart';
 import 'io.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -11,6 +12,7 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:intl/intl.dart';
 import 'dart:html'
     as webFile; //https://stackoverflow.com/questions/57182634/how-can-i-read-and-write-files-in-flutter-web
+import 'package:file_picker/file_picker.dart';
 
 const String kICSFileName = 'example.ics';
 
@@ -43,12 +45,9 @@ class Event {
     return '$hours:$minutes';
   }
 
-  String get formattedDuration {
-    String startHour = start.hour.toString();
-    String startMinute = start.minute.toString();
-    String endHour = end.hour.toString();
-    String endMinute = end.minute.toString();
-    return '$startHour:$startMinute - $endHour:$endMinute';
+  String startToEndString({bool use24HourClock = false}) {
+    DateFormat format = use24HourClock ? DateFormat.Hm() : DateFormat.jm();
+    return '${format.format(start)} - ${format.format(end)}';
   }
 
   String toICSEvent() {
@@ -64,6 +63,12 @@ class Event {
     // print(icsString);
     return icsString;
   }
+}
+
+String formatTime(TimeOfDay time, {bool use24HourClock = false}) {
+  DateTime dt = DateTime(0, 0, 0, time.hour, time.minute);
+  DateFormat format = use24HourClock ? DateFormat.Hm() : DateFormat.jm();
+  return format.format(dt);
 }
 
 final kToday = DateTime.now();
@@ -137,4 +142,44 @@ void shareICS() {
     writeString(kICSFileName, icsString);
   }
   // final bytes = File('example.ics').writeAsStringSync(icsString);
+}
+
+void importICS() async {
+  String icsString = '';
+  if (kIsWeb) {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['ics'],
+    );
+    if (result != null) {
+      try {
+        PlatformFile platformFile = result.files.first;
+        webFile.File file =
+            webFile.File(platformFile.bytes!, platformFile.name);
+
+        final reader = webFile.FileReader();
+        reader.readAsText(file);
+        reader.onLoadEnd.listen((event) {
+          icsString = reader.result.toString();
+        });
+      } catch (e) {
+        print("Error: " + e.toString());
+      }
+    } else {
+      // User canceled the picker
+    }
+    print(icsString);
+
+    // if (icsString != '') {
+    //   ICalendar calendar = ICalendar.fromString(icsString);
+    //   Map<String, dynamic> calDict = calendar.toJson();
+    //   for (var item in calDict['events']) {
+    //     String title = item['summary'];
+    //     String description = item['description'];
+    //     DateTime start = DateTime.parse(item['start']);
+    //     DateTime end = DateTime.parse(item['end']);
+    //     createEvent(start, title, description, end.difference(start));
+    //   }
+    // }
+  }
 }
