@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     String homePageText = "Note Ninja";
-    String homePageLeadingText = "Welcome, ";
+    String homePageLeadingText = "Welcome, Guest";
     if (userCredential != null) {
       homePageLeadingText = "Welcome, ${userCredential!.user!.displayName}";
     }

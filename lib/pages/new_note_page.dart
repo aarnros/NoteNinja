@@ -10,9 +10,9 @@ class NewNotePage extends StatelessWidget {
   TextEditingController _bodyController = TextEditingController();
 
   void dispose() {
-      _titleController.dispose();
+    _titleController.dispose();
     _bodyController.dispose();
-    }
+  }
 
   //Updates the text in the note
   void updateOnBack() {
@@ -31,18 +31,18 @@ class NewNotePage extends StatelessWidget {
     updateTextFields();
     return Scaffold(
       appBar: AppBar(
-title: TitleEntry(_titleController),
+        title: TitleEntry(_titleController),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           tooltip: 'Back',
           onPressed: () => {
-updateOnBack(),
+            updateOnBack(),
             Navigator.popUntil(context, (route) => route.isFirst)
-            },
+          },
         ),
-        ),
+      ),
       body: NoteEntry(_bodyController),
-      );
+    );
   }
 }
 
@@ -64,14 +64,14 @@ class TitleEntry extends StatelessWidget {
         contentPadding: EdgeInsets.all(0),
         counter: null,
         counterText: "",
-              ),
+      ),
       maxLength: 31,
       maxLines: 1,
       style: TextStyle(
         fontSize: 21,
         fontWeight: FontWeight.bold,
         height: 1.5,
-              ),
+      ),
       textCapitalization: TextCapitalization.words,
     );
   }

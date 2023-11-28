@@ -13,6 +13,8 @@ class SavedNotesPage extends StatefulWidget {
   State<SavedNotesPage> createState() => _savedNotesPage();
 }
 
+
+
 class _savedNotesPage extends State<SavedNotesPage> {
   final noteList = NoteData();
 
@@ -26,28 +28,31 @@ class _savedNotesPage extends State<SavedNotesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: Text("Your Notes"),
       ),
       body: ListView.builder(
         itemCount: noteList.getLength(),
         itemBuilder: (context, index) {
-              return NoteCard(
+          return NoteCard(
             note: noteList.getNoteList()[index],
           );
-            },
-          ),
-                floatingActionButton: FloatingActionButton(
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                    builder: (context) =>
-                        NewNotePage(note: createNewNote(), isNew: true)));
-            setState(
-                () {}); //The cards will not update unless the state is updated
+            setState(() {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          NewNotePage(note: createNewNote(), isNew: true)));
+            });
+
+            // setState(
+            //     () {}); //The cards will not update unless the state is updated
           }),
-      );
+    );
   }
 }
