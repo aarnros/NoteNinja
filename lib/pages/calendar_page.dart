@@ -52,7 +52,8 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
-      bool use24HourClock = Provider.of<GlobalAppState>(context, listen: true).use24HourTime;
+    bool use24HourClock =
+        Provider.of<GlobalAppState>(context, listen: true).use24HourTime;
 
     return Scaffold(
       appBar: AppBar(
@@ -131,20 +132,22 @@ class _CalendarPageState extends State<CalendarPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    Event editableEvent =
-                                        kEvents[_selectedDay!]!.removeAt(index);
-                                    addEventDialog(
-                                        context,
-                                        setState,
-                                        _selectedDay!,
-                                        kEvents,
-                                        _selectedEvents,
-                                        editableEvent);
-                                  });
-                                },
-                                icon: Icon(Icons.mode_edit)),
+                              icon: Icon(Icons.mode_edit),
+                              onPressed: () {
+                                // setState(() {
+                                //   Event editableEvent =
+                                //       kEvents[_selectedDay!]!.removeAt(index);
+                                //   addEventDialog(
+                                //       context,
+                                //       setState,
+                                //       _selectedDay!,
+                                //       kEvents,
+                                //       _selectedEvents,
+                                //       editableEvent);
+                                // // });
+                                print(kEvents[_selectedDay!]![index]);
+                              },
+                            ),
                             IconButton(
 
                           icon: Icon(Icons.delete),
