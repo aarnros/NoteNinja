@@ -4,11 +4,15 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import 'io.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:intl/intl.dart';
-import 'package:share_plus/share_plus.dart';
+import 'dart:html'
+    as webFile; //https://stackoverflow.com/questions/57182634/how-can-i-read-and-write-files-in-flutter-web
+
+const String kICSFileName = 'example.ics';
 
 class Event {
   final String title;
@@ -50,7 +54,7 @@ class Event {
   String toICSEvent() {
     DateFormat icsFormat = DateFormat('yyyyMMdd\'T\'HHmmss\'Z\'');
     String icsString = 'BEGIN:VEVENT\n'
-'UID:$userEmail\n'
+        'UID:$userEmail\n'
         'DTSTAMP:${icsFormat.format(dateStamp.toUtc())}\n'
         'SUMMARY:$title\n'
         'DTSTART:${icsFormat.format(start.toUtc())}\n'
@@ -104,7 +108,7 @@ void createEvent(
 double timeToDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
 
 String getICSString() {
-String icsString = 'BEGIN:VCALENDAR\n'
+  String icsString = 'BEGIN:VCALENDAR\n'
       'VERSION:2.0\n'
       'PRODID:-//Flutter//Event Calendar//EN\n';
 
@@ -114,7 +118,7 @@ String icsString = 'BEGIN:VCALENDAR\n'
       break;
       // print(item.toICSEvent());
     }
-  break;
+    break;
   }
   icsString += 'END:VCALENDAR';
   return icsString;
@@ -122,13 +126,15 @@ String icsString = 'BEGIN:VCALENDAR\n'
 
 void shareICS() {
   String icsString = getICSString();
-  Uint8List bytes = Uint8List.fromList(utf8.encode(icsString));
-  if (kIsWeb){
-
-  }else{
-  XFile icsFile =
-      XFile.fromData(bytes, name: 'example.ics', mimeType: 'text/calendar');
-  Share.shareXFiles([icsFile], text: 'Here is your calendar file!');
+  if (kIsWeb) {
+    Uint8List bytes = Uint8List.fromList(utf8.encode(icsString));
+    var blob = webFile.Blob([bytes], 'text/calendar', 'native');
+    webFile.AnchorElement(
+        href: webFile.Url.createObjectUrlFromBlob(blob).toString())
+      ..setAttribute("download", kICSFileName)
+      ..click();
+  } else {
+    writeString(kICSFileName, icsString);
   }
   // final bytes = File('example.ics').writeAsStringSync(icsString);
 }
