@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../widgets/new_event_dialog.dart';
 import '../utils.dart';
+import '../EventList.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -56,7 +57,10 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
       //"+" button on calendar page, will eventually be used to add events
       floatingActionButton: FloatingActionButton(
-        onPressed: () => addEventDialog(context, setState, kEvents),
+        onPressed: () {
+          addEventDialog(
+              context, setState, _selectedDay!, kEvents, _selectedEvents);
+        },
         tooltip: 'Add Event',
         child: Icon(Icons.add),
       ),
@@ -88,6 +92,7 @@ class _CalendarPageState extends State<CalendarPage> {
             onPageChanged: (focusedDay) {
               // No need to call `setState()` here
               _focusedDay = focusedDay;
+              _selectedDay = focusedDay;
             },
           ),
           const SizedBox(height: 8.0),
@@ -119,6 +124,8 @@ class _CalendarPageState extends State<CalendarPage> {
                           onPressed: () {
                             setState(() {
                               kEvents[_selectedDay!]!.removeAt(index);
+                              _selectedEvents.value =
+                                  kEvents[_selectedDay!]!.toList();
                             });
                           },
                         ),

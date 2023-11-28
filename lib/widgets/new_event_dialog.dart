@@ -6,14 +6,20 @@ import 'package:provider/provider.dart';
 import '../main.dart';
 import 'package:intl/intl.dart';
 
-Future<void> addEventDialog(BuildContext context, StateSetter setState,
-    LinkedHashMap<DateTime, List<Event>> kEvents) {
+Future<void> addEventDialog(
+    BuildContext context,
+    StateSetter setState,
+    DateTime selectedDay,
+    LinkedHashMap<DateTime, List<Event>> kEvents,
+    ValueNotifier<List<Event>> selectedEvents) {
   String eventTitle = "";
   String eventDescription = "";
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate =
+      DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
   TimeOfDay startTime = TimeOfDay.now();
-  TimeOfDay endTime =
-      TimeOfDay.fromDateTime(DateTime.now().add(Duration(hours: 1)));
+  TimeOfDay endTime = TimeOfDay.fromDateTime(DateTime(
+          selectedDate.year, selectedDate.day, startTime.hour, startTime.minute)
+      .add(Duration(hours: 1)));
 
   bool use24HourClock = Provider.of<GlobalAppState>(context, listen: false)
           .userSettings['use24HourClock'] ??
@@ -191,6 +197,9 @@ Future<void> addEventDialog(BuildContext context, StateSetter setState,
                           selectedDate: newEventList
                         });
                       }
+                      kEvents[selectedDate]!
+                          .sort((a, b) => a.start.compareTo(b.start));
+                      selectedEvents.value = kEvents[selectedDate]!.toList();
                     },
                   );
                   // createEvent(selectedDate, title, description, )
