@@ -53,7 +53,7 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Calendar'),
-        actions: [IconButton(onPressed: shareICS, icon: Icon(Icons.share))],
+        actions: [IconButton(onPressed: shareICS, icon: Icon(Icons.download))],
       ),
       //"+" button on calendar page, will eventually be used to add events
       floatingActionButton: FloatingActionButton(
