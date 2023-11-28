@@ -3,7 +3,15 @@ class Note {
   String title;
   String body;
 
-  Note({this.noteId = 0, this.title = "Note", this.body = 'Body'});
+  Note({required this.noteId, required this.body, required this.title});
+
+  void updateTitle(String newTitle) {
+    this.title = newTitle;
+  }
+
+  void updateBody(String newBody) {
+    this.body = newBody;
+  }
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = Map<String, dynamic>();
