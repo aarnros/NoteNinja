@@ -37,10 +37,10 @@ class GlobalAppState extends ChangeNotifier {
 
   GlobalAppState([this.userCredential]);
 
-  HashMap<String, dynamic> userSettings = HashMap<String, dynamic>();
-
-  void changeSetting(String setting, dynamic value) {
-    userSettings[setting] = value;
+  bool _use24HourTime = false;
+  bool get use24HourTime => _use24HourTime;
+  set use24HourTime(bool value) {
+    _use24HourTime = value;
     notifyListeners();
   }
 

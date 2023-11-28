@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../widgets/new_event_dialog.dart';
 import '../utils.dart';
+import '../main.dart';
+import 'package:provider/provider.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -50,10 +52,15 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+      bool use24HourClock = Provider.of<GlobalAppState>(context, listen: true).use24HourTime;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Calendar'),
-        actions: [IconButton(onPressed: shareICS, icon: Icon(Icons.download))],
+        actions: [
+          IconButton(onPressed: shareICS, icon: Icon(Icons.download)),
+          IconButton(onPressed: importICS, icon: Icon(Icons.upload))
+        ],
       ),
       //"+" button on calendar page, will eventually be used to add events
       floatingActionButton: FloatingActionButton(
@@ -117,7 +124,8 @@ class _CalendarPageState extends State<CalendarPage> {
                         title: Text('${value[index]}'),
                         subtitle: Text(value[index].description),
                         leading: Text(
-                          value[index].formattedDuration,
+                          value[index]
+                              .startToEndString(use24HourClock: use24HourClock),
                         ),
                         trailing: IconButton(
                           icon: Icon(Icons.delete),

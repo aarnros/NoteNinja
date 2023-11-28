@@ -21,19 +21,8 @@ Future<void> addEventDialog(
           selectedDate.year, selectedDate.day, startTime.hour, startTime.minute)
       .add(Duration(hours: 1)));
 
-  bool use24HourClock = Provider.of<GlobalAppState>(context, listen: false)
-          .userSettings['use24HourClock'] ??
-      false;
-
-  String formatTime(TimeOfDay time) {
-    if (use24HourClock) {
-      return '${time.hour}:${time.minute}';
-    } else {
-      DateTime dt = DateTime(0, 0, 0, time.hour, time.minute);
-      DateFormat("h:mma").format(dt);
-      return '${dt.hour}:${dt.minute}';
-    }
-  }
+  bool use24HourClock = Provider.of<GlobalAppState>(context, listen: true).use24HourTime;
+      
 
   TextEditingController startDateController = TextEditingController();
   // TextEditingController endDateController = TextEditingController();
@@ -41,8 +30,8 @@ Future<void> addEventDialog(
   TextEditingController endTimeController = TextEditingController();
   startDateController.text = "${selectedDate.toLocal()}".split(' ')[0];
   // endDateController.text = "${selectedDate.toLocal()}".split(' ')[0];
-  startTimeController.text = formatTime(startTime);
-  endTimeController.text = formatTime(endTime);
+  startTimeController.text = formatTime(startTime, use24HourClock: use24HourClock);
+  endTimeController.text = formatTime(endTime, use24HourClock: use24HourClock);
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -66,7 +55,7 @@ Future<void> addEventDialog(
     if (picked != null && picked != startTime) {
       setState(() {
         startTime = picked;
-        startTimeController.text = formatTime(startTime);
+        startTimeController.text = formatTime(startTime, use24HourClock: use24HourClock);
       });
     }
   }
@@ -82,7 +71,7 @@ Future<void> addEventDialog(
         timeToDouble(endTime) > timeToDouble(startTime)) {
       setState(() {
         endTime = picked;
-        endTimeController.text = formatTime(endTime);
+        endTimeController.text = formatTime(endTime, use24HourClock: use24HourClock);
       });
     }
   }
