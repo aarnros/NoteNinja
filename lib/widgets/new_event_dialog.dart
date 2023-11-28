@@ -11,7 +11,8 @@ Future<void> addEventDialog(
     StateSetter setState,
     DateTime selectedDay,
     LinkedHashMap<DateTime, List<Event>> kEvents,
-    ValueNotifier<List<Event>> selectedEvents) {
+    ValueNotifier<List<Event>> selectedEvents,
+    [Event? edit]) {
   String eventTitle = "";
   String eventDescription = "";
   DateTime selectedDate =
@@ -20,6 +21,12 @@ Future<void> addEventDialog(
   TimeOfDay endTime = TimeOfDay.fromDateTime(DateTime(
           selectedDate.year, selectedDate.day, startTime.hour, startTime.minute)
       .add(Duration(hours: 1)));
+  if (edit != null) {
+    startTime = TimeOfDay(hour: edit.start.hour, minute: edit.start.minute);
+    endTime = TimeOfDay(hour: edit.end.hour, minute: edit.end.minute);
+    eventTitle = edit.title;
+    eventDescription = edit.description;
+  }
 
   bool use24HourClock = Provider.of<GlobalAppState>(context, listen: false)
           .userSettings['use24HourClock'] ??
@@ -34,6 +41,17 @@ Future<void> addEventDialog(
       return '${dt.hour}:${dt.minute}';
     }
   }
+
+  TextEditingController titleController =
+      TextEditingController(text: eventTitle);
+  titleController.addListener(() {
+    eventTitle = titleController.text;
+  });
+  TextEditingController descriptionController =
+      TextEditingController(text: eventDescription);
+  descriptionController.addListener(() {
+    eventDescription = descriptionController.text;
+  });
 
   TextEditingController startDateController = TextEditingController();
   // TextEditingController endDateController = TextEditingController();
@@ -102,6 +120,7 @@ Future<void> addEventDialog(
           child: Column(
             children: [
               TextField(
+                controller: titleController,
                 decoration: const InputDecoration(
                   hintText: 'Event Name',
                 ),
@@ -113,6 +132,7 @@ Future<void> addEventDialog(
                 // expands: true,
                 // maxLines: null,
                 // minLines: null,
+                controller: descriptionController,
                 decoration: const InputDecoration(
                   hintText: 'Event Description',
                 ),

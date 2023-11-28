@@ -119,15 +119,35 @@ class _CalendarPageState extends State<CalendarPage> {
                         leading: Text(
                           value[index].formattedDuration,
                         ),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            setState(() {
-                              kEvents[_selectedDay!]!.removeAt(index);
-                              _selectedEvents.value =
-                                  kEvents[_selectedDay!]!.toList();
-                            });
-                          },
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    Event editableEvent =
+                                        kEvents[_selectedDay!]!.removeAt(index);
+                                    addEventDialog(
+                                        context,
+                                        setState,
+                                        _selectedDay!,
+                                        kEvents,
+                                        _selectedEvents,
+                                        editableEvent);
+                                  });
+                                },
+                                icon: Icon(Icons.mode_edit)),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                setState(() {
+                                  kEvents[_selectedDay!]!.removeAt(index);
+                                  _selectedEvents.value =
+                                      kEvents[_selectedDay!]!.toList();
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     );
