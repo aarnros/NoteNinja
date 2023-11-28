@@ -35,6 +35,11 @@ class Event {
   @override
   String toString() => title;
 
+  String get dateString {
+    DateFormat format = DateFormat('yyyy-MM-dd');
+    return format.format(start);
+  }
+
   bool isWithin(DateTime start, DateTime end) {
     return this.start.isAfter(start) && this.end.isBefore(end);
   }

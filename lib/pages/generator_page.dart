@@ -56,8 +56,10 @@ class _GeneratorPageState extends State<GeneratorPage> {
                               title: Text(value[index].title),
                               subtitle: Text(value[index].description),
                               trailing: Text(
-                                value[index].startToEndString(
-                                    use24HourClock: use24HourClock),
+                                value[index].dateString +
+                                    ' ' +
+                                    value[index].startToEndString(
+                                        use24HourClock: use24HourClock),
                                 // trailing: IconButton(
                                 //   icon: Icon(Icons.delete),
                                 //   onPressed: () {

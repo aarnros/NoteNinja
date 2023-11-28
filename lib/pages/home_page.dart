@@ -26,12 +26,10 @@ class _MyHomePageState extends State<MyHomePage> {
       case 0:
         page = GeneratorPage();
       case 1:
-        page = FavoritesPage();
-      case 2:
         page = SavedNotesPage();
-      case 3:
+      case 2:
         page = CalendarPage();
-      case 4:
+      case 3:
         page = SettingsPage();
 
       default:
@@ -63,10 +61,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   NavigationRailDestination(
                     icon: Icon(Icons.home),
                     label: Text('Home'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.favorite),
-                    label: Text('Favorite Notes'),
                   ),
                   NavigationRailDestination(
                     icon: Icon(Icons.notes),

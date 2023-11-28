@@ -25,7 +25,7 @@ class NoteCard extends StatelessWidget {
             ;
           },
           child: SizedBox(
-            width: 200,
+            width: 1000,
             height: 100,
             child: Text(
               note.title,
