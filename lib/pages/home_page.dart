@@ -28,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         page = FavoritesPage();
       case 2:
-                page = SavedNotesPage();
+        page = SavedNotesPage();
       case 3:
         page = CalendarPage();
       case 4:
@@ -38,8 +38,22 @@ class _MyHomePageState extends State<MyHomePage> {
         throw UnimplementedError('no widget for $selectedIndex');
     }
 
+    String homePageText = "Note Ninja";
+    String homePageLeadingText = "Welcome, Guest";
+    if (userCredential != null) {
+      homePageLeadingText = "Welcome, ${userCredential!.user!.displayName}";
+    }
+
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
+        appBar: AppBar(
+            title: Row(
+          children: [
+            Text(homePageText),
+            Spacer(),
+            Text(homePageLeadingText),
+          ],
+        )),
         body: Row(
           children: [
             SafeArea(
@@ -54,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icon(Icons.favorite),
                     label: Text('Favorite Notes'),
                   ),
-                                    NavigationRailDestination(
+                  NavigationRailDestination(
                     icon: Icon(Icons.notes),
                     label: Text('View Notes'),
                   ),

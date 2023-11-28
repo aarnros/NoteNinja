@@ -23,6 +23,7 @@ class SignUpApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => const SignUpScreen(),
         '/welcome': (context) => GlobalApp(),
@@ -121,7 +122,8 @@ class _SignUpFormState extends State<SignUpForm> {
           TextButton(
             onPressed: () async {
               UserCredential userCredential = await signInWithGoogle();
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => GlobalApp(userCredential)));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => GlobalApp(userCredential)));
             },
             child: Text('Sign In with Google'),
           )
