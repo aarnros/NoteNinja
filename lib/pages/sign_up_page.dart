@@ -121,8 +121,6 @@ class _SignUpFormState extends State<SignUpForm> {
           TextButton(
             onPressed: () async {
               UserCredential userCredential = await signInWithGoogle();
-
-              print(userCredential.user?.displayName);
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => GlobalApp(userCredential)));
             },
             child: Text('Sign In with Google'),

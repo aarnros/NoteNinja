@@ -21,6 +21,7 @@ Future<void> addEventDialog(
   TimeOfDay endTime = TimeOfDay.fromDateTime(DateTime(
           selectedDate.year, selectedDate.day, startTime.hour, startTime.minute)
       .add(Duration(hours: 1)));
+
 if (edit != null) {
     startTime = TimeOfDay(hour: edit.start.hour, minute: edit.start.minute);
     endTime = TimeOfDay(hour: edit.end.hour, minute: edit.end.minute);
@@ -31,7 +32,9 @@ if (edit != null) {
   bool use24HourClock = Provider.of<GlobalAppState>(context, listen: true).use24HourTime;
       
 
+
 TextEditingController titleController =
+
       TextEditingController(text: eventTitle);
   titleController.addListener(() {
     eventTitle = titleController.text;
@@ -109,7 +112,7 @@ TextEditingController titleController =
           child: Column(
             children: [
               TextField(
-controller: titleController,
+                controller: titleController,
                 decoration: const InputDecoration(
                   hintText: 'Event Name',
                 ),
@@ -121,7 +124,9 @@ controller: titleController,
                 // expands: true,
                 // maxLines: null,
                 // minLines: null,
-controller: descriptionController,
+
+                controller: descriptionController,
+
                 decoration: const InputDecoration(
                   hintText: 'Event Description',
                 ),

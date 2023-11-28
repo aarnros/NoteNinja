@@ -146,6 +146,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                 },
                                 icon: Icon(Icons.mode_edit)),
                             IconButton(
+
                           icon: Icon(Icons.delete),
                           onPressed: () {
                             setState(() {
@@ -154,6 +155,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                   kEvents[_selectedDay!]!.toList();
                             });
                           },
+
                         ),
 ],
                         ),
