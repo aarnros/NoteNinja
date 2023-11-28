@@ -22,19 +22,17 @@ Future<void> addEventDialog(
           selectedDate.year, selectedDate.day, startTime.hour, startTime.minute)
       .add(Duration(hours: 1)));
 
-if (edit != null) {
+  if (edit != null) {
     startTime = TimeOfDay(hour: edit.start.hour, minute: edit.start.minute);
     endTime = TimeOfDay(hour: edit.end.hour, minute: edit.end.minute);
     eventTitle = edit.title;
     eventDescription = edit.description;
   }
 
-  bool use24HourClock = Provider.of<GlobalAppState>(context, listen: true).use24HourTime;
-      
+  bool use24HourClock =
+      Provider.of<GlobalAppState>(context, listen: false).use24HourTime;
 
-
-TextEditingController titleController =
-
+  TextEditingController titleController =
       TextEditingController(text: eventTitle);
   titleController.addListener(() {
     eventTitle = titleController.text;
@@ -51,7 +49,8 @@ TextEditingController titleController =
   TextEditingController endTimeController = TextEditingController();
   startDateController.text = "${selectedDate.toLocal()}".split(' ')[0];
   // endDateController.text = "${selectedDate.toLocal()}".split(' ')[0];
-  startTimeController.text = formatTime(startTime, use24HourClock: use24HourClock);
+  startTimeController.text =
+      formatTime(startTime, use24HourClock: use24HourClock);
   endTimeController.text = formatTime(endTime, use24HourClock: use24HourClock);
 
   Future<void> selectDate(BuildContext context) async {
@@ -76,7 +75,8 @@ TextEditingController titleController =
     if (picked != null && picked != startTime) {
       setState(() {
         startTime = picked;
-        startTimeController.text = formatTime(startTime, use24HourClock: use24HourClock);
+        startTimeController.text =
+            formatTime(startTime, use24HourClock: use24HourClock);
       });
     }
   }
@@ -92,7 +92,8 @@ TextEditingController titleController =
         timeToDouble(endTime) > timeToDouble(startTime)) {
       setState(() {
         endTime = picked;
-        endTimeController.text = formatTime(endTime, use24HourClock: use24HourClock);
+        endTimeController.text =
+            formatTime(endTime, use24HourClock: use24HourClock);
       });
     }
   }
