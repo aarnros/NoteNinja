@@ -21,7 +21,8 @@ Future<void> addEventDialog(
   TimeOfDay endTime = TimeOfDay.fromDateTime(DateTime(
           selectedDate.year, selectedDate.day, startTime.hour, startTime.minute)
       .add(Duration(hours: 1)));
-  if (edit != null) {
+
+if (edit != null) {
     startTime = TimeOfDay(hour: edit.start.hour, minute: edit.start.minute);
     endTime = TimeOfDay(hour: edit.end.hour, minute: edit.end.minute);
     eventTitle = edit.title;
@@ -31,7 +32,9 @@ Future<void> addEventDialog(
   bool use24HourClock = Provider.of<GlobalAppState>(context, listen: true).use24HourTime;
       
 
-  TextEditingController titleController =
+
+TextEditingController titleController =
+
       TextEditingController(text: eventTitle);
   titleController.addListener(() {
     eventTitle = titleController.text;
@@ -121,7 +124,9 @@ Future<void> addEventDialog(
                 // expands: true,
                 // maxLines: null,
                 // minLines: null,
+
                 controller: descriptionController,
+
                 decoration: const InputDecoration(
                   hintText: 'Event Description',
                 ),

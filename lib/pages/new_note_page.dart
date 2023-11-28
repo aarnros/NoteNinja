@@ -1,83 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:note_ninja/pages/saved_notes_page.dart';
 import '../widgets/note.dart';
+import '../widgets/note_data.dart';
 
-class NewNotePage extends StatefulWidget {
-  _NewNotePage createState() => _NewNotePage();
-}
+class NewNotePage extends StatelessWidget {
+  Note note;
+  bool isNew;
+  NewNotePage({super.key, required this.note, required this.isNew});
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _bodyController = TextEditingController();
 
-class _NewNotePage extends State<NewNotePage> {
-  String noteTitle = '';
-  String noteBody = '';
-
-  TextEditingController _titleTextController = TextEditingController();
-  TextEditingController _bodyTextController = TextEditingController();
-
-  void titleTextChange() {
-    setState(() {
-      noteTitle = _titleTextController.text.trim();
-    });
-  }
-
-  void bodyTextChange() {
-    setState(() {
-      noteBody = _bodyTextController.text.trim();
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _titleTextController.addListener(titleTextChange);
-    _bodyTextController.addListener(bodyTextChange);
-  }
-
-  @override
   void dispose() {
-    _bodyTextController.dispose();
-    _titleTextController.dispose();
-    super.dispose();
+      _titleController.dispose();
+    _bodyController.dispose();
+    }
+
+  //Updates the text in the note
+  void updateOnBack() {
+    note.updateBody(_bodyController.text);
+    note.updateTitle(_titleController.text);
+  }
+
+  //Gets the string from the note
+  void updateTextFields() {
+    _titleController = TextEditingController(text: note.title);
+    _bodyController = TextEditingController(text: note.body);
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    updateTextFields();
+    return Scaffold(
       appBar: AppBar(
+title: TitleEntry(_titleController),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back),
           tooltip: 'Back',
           onPressed: () => {
+updateOnBack(),
             Navigator.popUntil(context, (route) => route.isFirst)
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => SavedNotesPage(),
-            //   ),
-            // ),
-          },
+            },
         ),
-        title: NoteTitleEntry(_titleTextController),
-      ),
-      body: NoteEntry(_bodyTextController),
-      floatingActionButton: FloatingActionButton(
-          tooltip: 'Save Note',
-          onPressed: () {
-            Navigator.popUntil(context, (route) => route.isFirst);
-          }),
-    ));
+        ),
+      body: NoteEntry(_bodyController),
+      );
   }
 }
 
-class NoteTitleEntry extends StatelessWidget {
-  final _textFieldController;
+class TitleEntry extends StatelessWidget {
+  final __textFieldController;
 
-  NoteTitleEntry(this._textFieldController);
+  TitleEntry(this.__textFieldController);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: _textFieldController,
+      controller: __textFieldController,
       decoration: InputDecoration(
         border: InputBorder.none,
         focusedBorder: InputBorder.none,
@@ -87,21 +64,14 @@ class NoteTitleEntry extends StatelessWidget {
         contentPadding: EdgeInsets.all(0),
         counter: null,
         counterText: "",
-        hintText: 'Title',
-        hintStyle: TextStyle(
-          fontSize: 21,
-          fontWeight: FontWeight.bold,
-          height: 1.5,
-        ),
-      ),
+              ),
       maxLength: 31,
       maxLines: 1,
       style: TextStyle(
         fontSize: 21,
         fontWeight: FontWeight.bold,
         height: 1.5,
-        color: Color(0xFFFDFFFC),
-      ),
+              ),
       textCapitalization: TextCapitalization.words,
     );
   }
