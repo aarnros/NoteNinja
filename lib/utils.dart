@@ -50,6 +50,7 @@ class Event {
     // print(icsString);
     return icsString;
   }
+
 }
 
 final kToday = DateTime.now();
