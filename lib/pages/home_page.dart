@@ -17,11 +17,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
   UserCredential? userCredential;
-  _MyHomePageState(this.userCredential) {
-    print("From _MyHomePageState...");
-    print(userCredential?.user?.displayName);
-    // print(userCredential);// Dangerous, use ONLY for debugging and delete this to avoid exposing user credentials!
-  }
+  _MyHomePageState(this.userCredential);
   @override
   Widget build(BuildContext context) {
     Widget page;
