@@ -16,47 +16,45 @@ class GeneratorPage extends StatelessWidget {
       icon = Icons.favorite_border;
     }
 
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          padding: EdgeInsets.only(top: 100),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              //Upcoming Events Tab
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(color: Colors.amberAccent),
-                        child: Icon(Icons.calendar_month),
-                      ),
-                      Text('Upcoming Events')
-                    ],
-                  )
-                ],
-              ),
-              //Previous Note Tab
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(color: Colors.amberAccent),
-                        child: Icon(Icons.note),
-                      ),
-                      Text('Previous Note')
-                    ],
-                  )
-                ],
-              ),
-            ],
-          ),
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.only(top: 100),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            //Upcoming Events Tab
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(color: Colors.amberAccent),
+                      child: Icon(Icons.calendar_month),
+                    ),
+                    Text('Upcoming Events')
+                  ],
+                )
+              ],
+            ),
+            //Previous Note Tab
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(color: Colors.amberAccent),
+                      child: Icon(Icons.note),
+                    ),
+                    Text('Previous Note')
+                  ],
+                )
+              ],
+            ),
+          ],
         ),
       ),
     );

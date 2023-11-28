@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:note_ninja/pages/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
@@ -11,6 +12,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     bool use24HourClock =
         Provider.of<GlobalAppState>(context, listen: true).use24HourTime;
+    bool darkMode = Provider.of<GlobalAppState>(context, listen: true).darkMode;
 
     return Scaffold(
       appBar: AppBar(
@@ -25,6 +27,16 @@ class SettingsPage extends StatelessWidget {
             onToggle: (bool value) {
               Provider.of<GlobalAppState>(context, listen: false)
                   .use24HourTime = value;
+            },
+          ),
+          SettingsTile.switchTile(
+            initialValue: darkMode,
+            title: Text('Dark Mode'),
+            leading: Icon(Icons.dark_mode),
+            onToggle: (bool value) {
+              Provider.of<GlobalAppState>(context, listen: false).darkMode =
+                  value;
+              GlobalApp.of(context)!.changeTheme(value);
             },
           ),
         ]),
