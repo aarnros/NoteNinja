@@ -65,6 +65,8 @@ class _SignUpFormState extends State<SignUpForm> {
   final _firstNameTextController = TextEditingController();
   final _lastNameTextController = TextEditingController();
   final _usernameTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+  final _confirmPasswordTextController = TextEditingController();
 
   double _formProgress = 0;
 
@@ -74,6 +76,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    _formProgress = 0;
     return Form(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -101,23 +104,74 @@ class _SignUpFormState extends State<SignUpForm> {
               decoration: const InputDecoration(hintText: 'Username'),
             ),
           ),
-          TextButton(
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.resolveWith(
-                  (Set<MaterialState> states) {
-                return states.contains(MaterialState.disabled)
-                    ? null
-                    : Colors.white;
-              }),
-              backgroundColor: MaterialStateProperty.resolveWith(
-                  (Set<MaterialState> states) {
-                return states.contains(MaterialState.disabled)
-                    ? null
-                    : Colors.blue;
-              }),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: TextFormField(
+              controller: _passwordTextController,
+              decoration: const InputDecoration(hintText: 'Password'),
+              obscureText: true,
             ),
-            onPressed: _showWelcomeScreen,
-            child: const Text('Sign up'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: TextFormField(
+              controller: _confirmPasswordTextController,
+              decoration: const InputDecoration(hintText: 'Confirm Password'),
+              obscureText: true,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: LinearProgressIndicator(
+              value: _formProgress,
+              backgroundColor: Colors.grey[300],
+              valueColor: AlwaysStoppedAnimation<Color>(
+                _formProgress >= 0.5 ? Colors.green : Colors.red,
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.resolveWith(
+                      (Set<MaterialState> states) {
+                    return states.contains(MaterialState.disabled)
+                        ? null
+                        : Colors.white;
+                  }),
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (Set<MaterialState> states) {
+                    return states.contains(MaterialState.disabled)
+                        ? null
+                        : Colors.blue;
+                  }),
+                ),
+                onPressed: _showWelcomeScreen,
+                child: const Text('Sign up'),
+              ),
+              TextButton(
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.resolveWith(
+                      (Set<MaterialState> states) {
+                    return states.contains(MaterialState.disabled)
+                        ? null
+                        : Colors.white;
+                  }),
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (Set<MaterialState> states) {
+                    return states.contains(MaterialState.disabled)
+                        ? null
+                        : Colors.blue;
+                  }),
+                ),
+                onPressed: () {
+                  _showSignUpDialog();
+                },
+                child: const Text('Sign-in'),
+              ),
+            ],
           ),
           TextButton(
             onPressed: () async {
@@ -129,6 +183,46 @@ class _SignUpFormState extends State<SignUpForm> {
           )
         ],
       ),
+    );
+  }
+
+  void _showSignUpDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Sign In'),
+          content: SizedBox(
+            width: 500,
+            height: 150,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Add your sign-in form fields here
+                // For example, you can use TextFormField
+
+                TextFormField(
+                  controller: _usernameTextController,
+                  decoration: const InputDecoration(hintText: 'Email'),
+                ),
+                TextFormField(
+                  controller: _passwordTextController,
+                  decoration: const InputDecoration(hintText: 'Password'),
+                  obscureText: true,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/welcome');
+              },
+              child: const Text('Sign In'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
